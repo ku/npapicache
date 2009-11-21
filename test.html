@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Aplix Foo Plugin Test</title>
+</head>
+<body>
+<script type="text/javascript">
+function scriptSimple() {
+	try {
+		var o = document.getElementById("pluginobj");
+		o.completed =  function () {
+		 console.log("completed");
+		 alert("completed");
+		 return 1;
+		} ;
+
+		//var u = "http://ido.nu/kuma/wp-content/uploads/2009/11/submenu.png";
+		u = document.forms[0].u.value;
+		var path = o.enqueue(u);
+		var b = o.isFetching(u);
+
+		var urlFileHash = {};
+
+		urlFileHash[u] = path;
+
+		var timer = window.setInterval(function () {
+			var b = o.isFetching(u);
+			
+			
+			
+			if ( !b ) {
+				window.clearInterval(timer);
+				var img = document.createElement('img');
+				
+				var src = urlFileHash[u].split(/\\/).pop();
+								img.src = "./" + src;
+			img.title = 					img.src;
+				document.body.appendChild(img);
+			}
+			console.log(path, b);
+		} , 1000);
+
+		console.log(path, b);
+
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+function foo() {
+	try {
+		alert(document.getElementById("pluginobj").foo());
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+</script>
+<p>
+<form action="javascript:scriptSimple()">
+<input type="" name="u" value="http://ido.nu/kuma/wp-content/uploads/2009/11/submenu.png" />
+<input type="submit"  value="fetch" />
+</form>
+<object id="pluginobj" type="application/x-vnd-aplix-foo">Plugin FAILED to load</object>
+</p>
+</body>
+</html>
+
